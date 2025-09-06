@@ -7,6 +7,9 @@ use App\Http\Controllers\Api\BidangController;
 use App\Http\Controllers\Api\PengurusController;
 use App\Http\Controllers\Api\JobdeskController;
 use App\Http\Controllers\Api\LaporanController;
+// Import Controller Master
+use App\Http\Controllers\Api\Master\PengurusController as MasterPengurusController;
+use App\Http\Controllers\Api\Master\JobdeskController as MasterJobdeskController;
 
 // Public routes
 Route::post('/login', [AuthController::class, 'login']);
@@ -23,8 +26,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('/laporan', LaporanController::class)->only(['index', 'store', 'show']);
 
     // --- Admin Only Routes ---
-    Route::middleware('can:access-admin-features')->group(function () {
-        // Nanti route untuk CRUD master data bisa ditambahkan di sini
-        // Contoh: Route::apiResource('/master/pengurus', MasterPengurusController::class);
+    // Rute untuk CRUD Master Data (Hanya Admin Utama)
+    Route::middleware('can:access-admin-utama')->prefix('master')->group(function () {
+        Route::apiResource('/pengurus', MasterPengurusController::class);
+        Route::apiResource('/jobdesk', MasterJobdeskController::class);
     });
 });
