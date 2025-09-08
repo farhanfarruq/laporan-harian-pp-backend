@@ -19,7 +19,10 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['https://laporan-harian-pp-frontend.vercel.app'],
+    'allowed_origins' => [
+        'https://laporan-harian-pp-frontend.vercel.app',
+        'https://laporan-harian-pp-frontend-*.vercel.app'
+    ],    
     
     'allowed_origins_patterns' => [],
 
