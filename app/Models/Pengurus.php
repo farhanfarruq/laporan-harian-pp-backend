@@ -16,7 +16,6 @@ class Pengurus extends Model
         return $this->belongsTo(Bidang::class);
     }
 
-    // Tambahkan relasi ini
     public function laporans()
     {
         return $this->hasMany(Laporan::class);

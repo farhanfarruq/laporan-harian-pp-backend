@@ -23,6 +23,7 @@ class User extends Authenticatable
         'remember_token',
     ];
 
+    // Relasi ke Bidang (untuk admin bidang)
     public function bidang()
     {
         return $this->belongsTo(Bidang::class);

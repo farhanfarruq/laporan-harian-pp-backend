@@ -10,9 +10,13 @@ class Bidang extends Model
     use HasFactory;
     protected $guarded = ['id'];
 
-    // Tambahkan relasi ini
     public function jobdesks()
     {
         return $this->hasMany(Jobdesk::class);
+    }
+
+    public function pengurus()
+    {
+        return $this->hasMany(Pengurus::class);
     }
 }

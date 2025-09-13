@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api; // <-- INI YANG DIPERBAIKI (sebelumnya ada ...\Master)
+namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Jobdesk;
@@ -9,12 +9,30 @@ use Illuminate\Http\Request;
 class JobdeskController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Menampilkan daftar semua jobdesk yang dikelompokkan
+     * untuk keperluan form.
+     *
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
-        // Rute ini hanya untuk mengambil data, tidak perlu otorisasi ketat
-        $jobdesk = Jobdesk::all();
-        return response()->json(['data' => $jobdesk]);
+        // Mengambil semua jobdesk beserta relasi bidangnya
+        $jobdesks = Jobdesk::with('bidang:id,slug')->get();
+
+        $formattedJobdesks = [];
+
+        // Mengelompokkan jobdesk berdasarkan slug bidang dan tipe jobdesk
+        foreach ($jobdesks as $jobdesk) {
+            // Membuat kunci unik, contoh: 'keamanan_harian' atau 'bapakamar'
+            $key = $jobdesk->bidang->slug;
+            if ($jobdesk->type) {
+                $key .= '_' . $jobdesk->type;
+            }
+
+            // Memasukkan deskripsi jobdesk ke dalam array dengan kunci yang sesuai
+            $formattedJobdesks[$key][] = $jobdesk->description;
+        }
+
+        return response()->json($formattedJobdesks);
     }
 }
